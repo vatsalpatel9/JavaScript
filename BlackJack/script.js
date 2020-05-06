@@ -62,16 +62,14 @@ function createPlayers(num){
 function dealCards(){
     shuffleDeck = shuffle(deck);
     createPlayers(2);
-    console.log(players.length);
     for(let i = 0; i < 2; i++){
         for(let j = 0; j < players.length; j++){
             var card = shuffleDeck.pop();
-            players[i].Hand.push(card);
+            players[j].Hand.push(card);
             printCards(card, j);
-            updatePoints();
         }
     }
-    console.log(players[0].Hand.length);
+    updatePoints();
 }
 
 //get points
@@ -82,35 +80,20 @@ function getPoints(player){
         console.log(players[player].Hand[i].Weight);
     }
     players[player].Points = point;
-    return point;
 }
 
 // update points
-function updatePoints(){    
+function updatePoints(){   
     for(let i = 0; i < players.length; i++){
-        var points = getPoints(i);
+        getPoints(i);
         var pointText = document.getElementById('weight' + i);
-        pointText.textContent = points;
+        pointText.textContent = players[i].Points;
     }
 }
 
 function printCards(card, j){
-   // shuffleDeck = shuffle(deck);
-   // for(let i = 0; i < shuffleDeck.length; i++){
-       /*
-    for(let i = 0; i < 2; i++){
-        var player1Card = shuffleDeck.pop();
-        const player1Li = document.createElement("LI");
-        const span1 = document.createElement("SPAN");
-        span1.textContent = player1Card.ValueCards + " " + player1Card.Suits;
-        player1Weight += player1Card.Weight;
-        weight.textContent = player1Weight;
-
-        player1Li.appendChild(span1);
-        player1.appendChild(player1Li);
-    }*/
-    //}
     const playerId = document.getElementById('player' + j);
+    console.log(j + " " + card.Suits + " " + card.ValueCards);
     const li = document.createElement("LI");
     const span = document.createElement("SPAN");
     span.textContent = card.ValueCards + " " + card.Suits;
