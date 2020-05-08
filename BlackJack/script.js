@@ -78,12 +78,13 @@ function dealCards(){
 }
 
 function hideDealer(){
+    const dealerNum = players.length - 1;
     var pointText = document.getElementById('weight2');
     const dealer = document.getElementById('player2');
     dealer.removeChild(dealer.lastChild);
-    let finalWeight = players[2].Points - players[2].Hand[1].Weight;
+    let finalWeight = players[dealerNum].Points - players[dealerNum].Hand[1].Weight;
     console.log(finalWeight);
-    players[2].Points = finalWeight;
+    players[dealerNum].Points = finalWeight;
     pointText.textContent = "House: " + finalWeight;
 }
 
@@ -166,17 +167,18 @@ function check(){
 }
 
 function showDealer(){
+    const dealerNum = players.length - 1;
     const dealer = document.getElementById('player2');
     const li = document.createElement("LI");
     const span = document.createElement("SPAN");
 
-    span.textContent = players[2].Hand[1].ValueCards + " " + players[2].Hand[1].Suits;
+    span.textContent = players[dealerNum].Hand[1].ValueCards + " " + players[dealerNum].Hand[1].Suits;
     li.appendChild(span);
     dealer.appendChild(li);
 
-    let finalWeight = players[2].Points + players[2].Hand[1].Weight;
-    players[0].Points = finalWeight;
-    document.getElementById('weight2').textContent = "House: " + players[0].Points;
+    let finalWeight = players[dealerNum].Points + players[dealerNum].Hand[1].Weight;
+    players[dealerNum].Points = finalWeight;
+    document.getElementById('weight2').textContent = "House: " + players[dealerNum].Points;
 }
 
 function hit(){
@@ -191,7 +193,7 @@ function stay(){
     document.getElementById('player'+playerNum).innerHTML = "Player" + playerNum + ": " + " Stay!";
     playerNum++;
     document.getElementById('turn').textContent = "Player: " + playerNum + " Turn";
-    if(playerNum === 2){
+    if(playerNum === players.length-1){
         console.log(playerNum);
         document.getElementById('turn').textContent = "House's Turn";
         showDealer();
