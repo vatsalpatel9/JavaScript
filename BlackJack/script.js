@@ -1,11 +1,10 @@
 var suits = ['Diamonds', 'Spads', 'Hearts', 'Clubs', 'Diamonds', 'Spads', 'Hearts', 'Clubs'];
 var valueCards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 var deck = new Array();
-const player1 = document.getElementById('player1');
-const player2 = document.getElementById('player2');
 var shuffleDeck;
 const weight = document.getElementById('weight');
 var players = new Array();
+var playerNum = 0;
 
 function buildDeck(){
     deck = new Array();
@@ -59,9 +58,13 @@ function createPlayers(num){
     }
 }
 
+function startGame(){
+    createPlayers(3);
+    dealCards();
+}
+
 function dealCards(){
     shuffleDeck = shuffle(deck);
-    createPlayers(2);
     for(let i = 0; i < 2; i++){
         for(let j = 0; j < players.length; j++){
             var card = shuffleDeck.pop();
@@ -70,6 +73,18 @@ function dealCards(){
         }
     }
     updatePoints();
+    hideDealer();
+    document.getElementById('turn').textContent = "Player " + playerNum + " Turn";
+}
+
+function hideDealer(){
+    var pointText = document.getElementById('weight2');
+    const dealer = document.getElementById('player2');
+    dealer.removeChild(dealer.lastChild);
+    let finalWeight = players[2].Points - players[2].Hand[1].Weight;
+    console.log(finalWeight);
+    players[2].Points = finalWeight;
+    pointText.textContent = "House: " + finalWeight;
 }
 
 //get points
@@ -77,7 +92,6 @@ function getPoints(player){
     var point = 0;
     for(let i = 0; i < players[player].Hand.length; i++){
         point += players[player].Hand[i].Weight;
-        console.log(players[player].Hand[i].Weight);
     }
     players[player].Points = point;
 }
@@ -87,8 +101,14 @@ function updatePoints(){
     for(let i = 0; i < players.length; i++){
         getPoints(i);
         var pointText = document.getElementById('weight' + i);
-        pointText.textContent = players[i].Points;
+        pointText.textContent = "Player " + i + ": " + players[i].Points;
     }
+}
+
+function updatePointsOf(i){
+    getPoints(i);
+    var pointText = document.getElementById('weight' + i);
+    pointText.textContent = "Player " + i + ": " + players[i].Points;
 }
 
 function printCards(card, j){
@@ -102,14 +122,83 @@ function printCards(card, j){
     playerId.appendChild(li);
 }
 
+/*
+function blackjackCheck(){
+    if(players[playerNum].Points > 21){
+        document.getElementById('weight' + playerNum).textContent = "Busted";
+        playerNum++;
+        document.getElementById('turn').textContent = "Player " + playerNum + " Turn";
+    }
+}*/
+
+function clearTable(){
+    for(let i = 0; i <= 1; i++){
+        const playerId0 = document.getElementById('player' + i);
+        while(playerId0.childNodes.length != 1){
+            playerId0.removeChild(playerId0.lastChild);
+        }
+        while(players[i].Hand.length != 0){
+            players[i].Hand.pop();
+            players[i].Points = 0;
+        }
+    }
+    playerNum = 0;
+    dealCards();
+}
+
+function check(){
+    if(players[0].Points > 21){
+        document.getElementById('weight0').textContent = "Busted";
+    }
+    if(players[1].Points > 21){
+        document.getElementById('weight1').textContent = "Busted";
+    }
+    if(players[0].Points > players[1].Points && players[0].Points <= 21){
+        document.getElementById('weight0').textContent = "winner!";
+    }else if (players[1].Points > players[0].Points && players[1].Points <= 21){
+        document.getElementById('weight1').textContent = "Winner!";
+    }
+    if(playerNum >= 2){
+        clearTable();
+        //playerNum = 0;
+    }
+    document.getElementById('turn').textContent = "Player " + playerNum + " Turn";
+}
+
+function showDealer(){
+    const dealer = document.getElementById('player2');
+    const li = document.createElement("LI");
+    const span = document.createElement("SPAN");
+
+    span.textContent = players[2].Hand[1].ValueCards + " " + players[2].Hand[1].Suits;
+    li.appendChild(span);
+    dealer.appendChild(li);
+
+    let finalWeight = players[2].Points + players[2].Hand[1].Weight;
+    players[0].Points = finalWeight;
+    document.getElementById('weight2').textContent = "House: " + players[0].Points;
+}
+
 function hit(){
     var hitCard = shuffleDeck.pop();
-    player1Weight += hitCard.Weight;
-    weight.textContent = player1Weight;
-    const player1Li2 = document.createElement("LI");
-    const span2 = document.createElement("SPAN");
-    span2.textContent = hitCard.ValueCards + " " + hitCard.Suits;
-    
-    player1Li2.appendChild(span2);
-    player1.appendChild(player1Li2);
+    players[playerNum].Hand.push(hitCard);
+    printCards(hitCard, playerNum);
+    updatePointsOf(playerNum);
+   // blackjackCheck();
+}
+
+function stay(){
+    document.getElementById('player'+playerNum).innerHTML = "Player" + playerNum + ": " + " Stay!";
+    playerNum++;
+    document.getElementById('turn').textContent = "Player: " + playerNum + " Turn";
+    if(playerNum === 2){
+        console.log(playerNum);
+        document.getElementById('turn').textContent = "House's Turn";
+        showDealer();
+    }
+    //check();
+}
+
+function houseTurn(){
+
 }

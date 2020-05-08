@@ -8,18 +8,22 @@
             <h1 class = "center">BlackBack</h1>
             <div id ="action">
                 <center>
-                <button class = "center" onclick="dealCards()">Print</button>
+                <button class = "center" onclick="startGame()">Deal</button>
                 <button class = "center" onClick="hit()">Hit</button>
+                <button class = "center" onClick="stay()">Stay</button>
                 </center>
             </div>
+            <h2 id = "turn"></h2>
+            <span id = "weight2"></span>
+            <ul id="player2">
+            </ul>
+
             <span id = "weight0"></span>
             <ul id="player0">
-                <li>player1</li>
             </ul>
 
             <span id = "weight1"></span>
             <ul id = "player1">
-                <li>player2</li>
             </ul>
         </div>  
     </body>
