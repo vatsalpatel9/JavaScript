@@ -183,7 +183,7 @@ function hit(){
 }
 
 function stay(){
-    document.getElementById('player'+playerNum).innerHTML = "Player" + playerNum + ": " + " Stay!";
+    document.getElementById('p'+playerNum).innerHTML = "Player " + playerNum + ": " + " Stay!";
     playerNum++;
     document.getElementById('turn').textContent = "Player: " + playerNum + " Turn";
     if(playerNum === players.length-1){
@@ -213,15 +213,15 @@ function check(){
     for(let i = 0; i <= players.length - 2; i++){
         console.log("loop");
         if(players[i].Points > 21){
-            document.getElementById('player' + i).textContent = "Player " + i + " Is Busted and Lost";
+            document.getElementById('p' + i).textContent = "Player " + i + " Is Busted and Lost";
         }
         else if(players[i].Points > players[2].Points || players[2].Points > 21){
             console.log(i);
-            document.getElementById('player' + i).textContent = "Player " + i + " Wins Against the House";
+            document.getElementById('p' + i).textContent = "Player " + i + " Wins Against the House";
         }
         else if(players[2].Points > players[i].Points){
-            document.getElementById('player' + 2).textContent = "The House Wins";
-            document.getElementById('player' + i).textContent = "Player " + i + " Lost";
+            document.getElementById('p' + 2).textContent = "The House Wins";
+            document.getElementById('p' + i).textContent = "Player " + i + " Lost";
         }
     }
     
