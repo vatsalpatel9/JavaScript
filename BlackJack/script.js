@@ -102,7 +102,7 @@ function updatePoints(){
     for(let i = 0; i < players.length; i++){
         getPoints(i);
         var pointText = document.getElementById('weight' + i);
-        pointText.textContent = "Player " + i + ": " + players[i].Points;
+        pointText.textContent = "Points: " + players[i].Points;
     }
 }
 

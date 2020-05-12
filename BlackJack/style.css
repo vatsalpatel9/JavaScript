@@ -1,15 +1,17 @@
 *{
     box-sizing: border-box;
-    background-color: aquamarine;
     box-shadow: black;
 }
 
+body{
+    background-color: aquamarine;
+}
+
 .container{
-    max-width: 1200px;
+    width: 75%;
     margin: 0 auto;
     padding: 10px;
-    display: flex;
-    flex-direction: column;
+    display: table;
     background-color: white;
     height: 95vh auto;
     border: 1px;
@@ -18,6 +20,7 @@
 
 .center{
     align-self: center;
+    text-align: center;
 }
 
 button{
@@ -62,4 +65,28 @@ button{
     padding: 5px;
     display: inline-block;
     margin: 5px;
+}
+
+#player0{
+    float: left;
+    height: 50vh auto;
+    width: 50%;
+    border: 1px solid black;
+}
+
+#player1{
+    float: right;
+    height: 50vh auto;
+    width: 50%;
+}
+
+#player2{
+    float: top;
+    height: 50vh auto;
+    width: 100%;
+    text-align: center;
+}
+
+#turn{
+    background-color: red;
 }
