@@ -1,4 +1,4 @@
-var suits = ['Diamonds', 'Spads', 'Hearts', 'Clubs', 'Diamonds', 'Spads', 'Hearts', 'Clubs'];
+var suits = ['diamonds', 'spades', 'hearts', 'clubs', 'diamonds', 'spades', 'hearts', 'clubs'];
 var valueCards = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 var deck = new Array();
 var shuffleDeck;
@@ -115,12 +115,30 @@ function updatePointsOf(i){
 function printCards(card, j){
     const playerId = document.getElementById('player' + j);
     console.log(j + " " + card.Suits + " " + card.ValueCards);
-    const li = document.createElement("LI");
-    const span = document.createElement("SPAN");
-    span.textContent = card.ValueCards + " " + card.Suits;
 
-    li.appendChild(span);
-    playerId.appendChild(li);
+    const cardDiv = document.createElement("DIV");
+    const numSpan = document.createElement("SPAN");
+    const sySpan = document.createElement("SPAN");
+
+    cardDiv.setAttribute("class", "card");
+    numSpan.setAttribute("class", "num");
+    sySpan.setAttribute("class", card.Suits);
+
+    numSpan.textContent = card.ValueCards;
+
+    if(card.Suits === 'hearts'){
+        sySpan.innerHTML = '&hearts;';
+    }else if(card.Suits === 'clubs'){
+        sySpan.innerHTML = '&clubs;';
+    }else if(card.Suits === 'diamonds'){
+        sySpan.innerHTML = '&diamondsuit;';
+    }else if(card.Suits === 'spades'){
+        sySpan.innerHTML = '&spades;';
+    }
+
+    cardDiv.appendChild(numSpan);
+    cardDiv.appendChild(sySpan);
+    playerId.appendChild(cardDiv);
 }
 
 /*
@@ -147,35 +165,10 @@ function clearTable(){
     dealCards();
 }
 
-function check(){
-    if(players[0].Points > 21){
-        document.getElementById('weight0').textContent = "Busted";
-    }
-    if(players[1].Points > 21){
-        document.getElementById('weight1').textContent = "Busted";
-    }
-    if(players[0].Points > players[1].Points && players[0].Points <= 21){
-        document.getElementById('weight0').textContent = "winner!";
-    }else if (players[1].Points > players[0].Points && players[1].Points <= 21){
-        document.getElementById('weight1').textContent = "Winner!";
-    }
-    if(playerNum >= 2){
-        clearTable();
-        //playerNum = 0;
-    }
-    document.getElementById('turn').textContent = "Player " + playerNum + " Turn";
-}
-
 function showDealer(){
     const dealerNum = players.length - 1;
-    const dealer = document.getElementById('player2');
-    const li = document.createElement("LI");
-    const span = document.createElement("SPAN");
-
-    span.textContent = players[dealerNum].Hand[1].ValueCards + " " + players[dealerNum].Hand[1].Suits;
-    li.appendChild(span);
-    dealer.appendChild(li);
-
+    const card = players[dealerNum].Hand[1];
+    printCards(card, 2);
     let finalWeight = players[dealerNum].Points + players[dealerNum].Hand[1].Weight;
     players[dealerNum].Points = finalWeight;
     document.getElementById('weight2').textContent = "House: " + players[dealerNum].Points;
@@ -194,13 +187,42 @@ function stay(){
     playerNum++;
     document.getElementById('turn').textContent = "Player: " + playerNum + " Turn";
     if(playerNum === players.length-1){
-        console.log(playerNum);
         document.getElementById('turn').textContent = "House's Turn";
         showDealer();
+        houseTurn();
     }
-    //check();
 }
 
 function houseTurn(){
-
+    console.log("house");
+    const dealerNum = players.length - 1;
+    let initialPoints = players[dealerNum].Points;
+    if(initialPoints >= 17){
+        stay();
+    }
+    while(initialPoints < 17){
+        hit();
+        initialPoints = players[dealerNum].Points;
+    }
+    check();
 }
+
+function check(){
+    console.log("check");
+    //compare each player with the dealer hand.
+    for(let i = 0; i <= players.length - 2; i++){
+        console.log("loop");
+        if(players[i].Points > 21){
+            document.getElementById('player' + i).textContent = "Player " + i + " Is Busted and Lost";
+        }
+        else if(players[i].Points > players[2].Points || players[2].Points > 21){
+            console.log(i);
+            document.getElementById('player' + i).textContent = "Player " + i + " Wins Against the House";
+        }
+        else if(players[2].Points > players[i].Points){
+            document.getElementById('player' + 2).textContent = "The House Wins";
+            document.getElementById('player' + i).textContent = "Player " + i + " Lost";
+        }
+    }
+    
+ }

@@ -32,10 +32,34 @@ button{
     padding: 10px;
 }
 
-.player1{
-    float: left;
+.hearts, .diamonds{
+    font-size: 100px;
+    color: red;
+    background-color: #f5f5f5;
+    vertical-align: bottom;
 }
 
-.player2{
-    float: right;
+.clubs, .spades{
+    font-size: 100px;
+    color: black;
+    background-color: #f5f5f5;
+    vertical-align: bottom;
+}
+
+.num{
+    font-size: 50px;
+    background-color: #f5f5f5;
+    display: block;
+}
+
+.card{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    width: 100px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    text-align: center;
+    padding: 5px;
+    display: inline-block;
+    margin: 5px;
 }
