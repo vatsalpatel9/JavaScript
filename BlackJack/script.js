@@ -143,13 +143,17 @@ function printCards(card, j) {
 }
 
 /*
+----Broken-------
 function blackjackCheck(){
-    if(players[playerNum].Points > 21){
-        document.getElementById('weight' + playerNum).textContent = "Busted";
-        playerNum++;
-        document.getElementById('turn').textContent = "Player " + playerNum + " Turn";
+    for(let i = 0; i <= 1; i++){
+        if(players[i].Points === 21){
+            document.getElementById('p' + i).textContent = "BlackJack Winner!";
+            blackjack = true;
+            stay();
+        }
     }
-}*/
+}
+*/
 
 function clearTable() {
     var j, elements = document.getElementsByClassName('card');
@@ -185,7 +189,6 @@ function hit() {
     players[playerNum].Hand.push(hitCard);
     printCards(hitCard, playerNum);
     updatePointsOf(playerNum);
-    // blackjackCheck();
 }
 
 function stay() {
@@ -232,8 +235,6 @@ function nextDeal(time, elem) {
 
 function check() {
     console.log("check");
-    //compare each player with the dealer hand.
-    //rework this function!
     for (let i = 0; i <= players.length - 2; i++) {
         console.log("loop");
         if (players[i].Points > 21) {
@@ -246,6 +247,8 @@ function check() {
         else if (players[2].Points > players[i].Points) {
             document.getElementById('p' + 2).textContent = "The House Wins";
             document.getElementById('p' + i).textContent = "Player " + i + " Lost";
+        }else if (players[i].Points === players[2].Points){
+            document.getElementById('p'+i).textContent = "Player " + i + " Pushed with Dealer!";
         }
     }
     console.log("Node length: " + document.getElementById('player0').childNodes.length);
