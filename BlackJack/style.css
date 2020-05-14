@@ -24,7 +24,7 @@ body{
 }
 
 button{
-    width: 50px;
+    width: 75px;
     height: 35px;
     position: relative;
 }
@@ -71,13 +71,13 @@ button{
     float: left;
     height: 50vh auto;
     width: 50%;
-    border: 1px solid black;
 }
 
 #player1{
     float: right;
     height: 50vh auto;
     width: 50%;
+    
 }
 
 #player2{

@@ -6,67 +6,67 @@ const weight = document.getElementById('weight');
 var players = new Array();
 var playerNum = 0;
 
-function buildDeck(){
+function buildDeck() {
     deck = new Array();
-    for(let i = 0; i < valueCards.length; i++){
-        for(let j =0; j < suits.length; j++){
+    for (let i = 0; i < valueCards.length; i++) {
+        for (let j = 0; j < suits.length; j++) {
             var weight = parseInt(valueCards[i]);
-            if(valueCards[i] === 'J' || valueCards[i] === 'Q' || valueCards[i] === 'K'){
+            if (valueCards[i] === 'J' || valueCards[i] === 'Q' || valueCards[i] === 'K') {
                 weight = 10;
-            }else if (valueCards[i] === 'A'){
+            } else if (valueCards[i] === 'A') {
                 weight = 11;
             }
-            var card = {ValueCards: valueCards[i], Suits: suits[j], Weight: weight}
+            var card = { ValueCards: valueCards[i], Suits: suits[j], Weight: weight }
             deck.push(card);
         }
     }
 }
 
-function testDeck(){
+function testDeck() {
     console.log(deck.length);
 }
 
 buildDeck();
 var pickCard = deck[Math.floor(Math.random() * deck.length)];
 console.log(pickCard);
-if(pickCard.Suits === 'Diamonds'){
+if (pickCard.Suits === 'Diamonds') {
     console.log("lucky");
-}else{
+} else {
     console.log("unlucky");
 }
 
 testDeck();
 
-function shuffle(array){
+function shuffle(array) {
     var currIndex = array.length, temporaryValue, randomIndex;
-    while (0 != currIndex){
+    while (0 != currIndex) {
         randomIndex = Math.floor(Math.random() * currIndex);
         currIndex -= 1;
         temporaryValue = array[currIndex];
         array[currIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue; 
+        array[randomIndex] = temporaryValue;
     }
     return array;
 }
 
-function createPlayers(num){
+function createPlayers(num) {
     players = new Array();
-    for (let i = 1; i <= num; i++){
+    for (let i = 1; i <= num; i++) {
         var hand = new Array();
-        var player = {Name: "Player " + i, ID: i, Points: 0, Hand: hand };
+        var player = { Name: "Player " + i, ID: i, Points: 0, Hand: hand };
         players.push(player);
     }
 }
 
-function startGame(){
+function startGame() {
     createPlayers(3);
     dealCards();
 }
 
-function dealCards(){
+function dealCards() {
     shuffleDeck = shuffle(deck);
-    for(let i = 0; i < 2; i++){
-        for(let j = 0; j < players.length; j++){
+    for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < players.length; j++) {
             var card = shuffleDeck.pop();
             players[j].Hand.push(card);
             printCards(card, j);
@@ -75,9 +75,10 @@ function dealCards(){
     updatePoints();
     hideDealer();
     document.getElementById('turn').textContent = "Player " + playerNum + " Turn";
+    document.getElementById('player' + playerNum).style.border = '1px solid black';
 }
 
-function hideDealer(){
+function hideDealer() {
     const dealerNum = players.length - 1;
     var pointText = document.getElementById('weight2');
     const dealer = document.getElementById('player2');
@@ -89,30 +90,30 @@ function hideDealer(){
 }
 
 //get points
-function getPoints(player){
+function getPoints(player) {
     var point = 0;
-    for(let i = 0; i < players[player].Hand.length; i++){
+    for (let i = 0; i < players[player].Hand.length; i++) {
         point += players[player].Hand[i].Weight;
     }
     players[player].Points = point;
 }
 
 // update points
-function updatePoints(){   
-    for(let i = 0; i < players.length; i++){
+function updatePoints() {
+    for (let i = 0; i < players.length; i++) {
         getPoints(i);
         var pointText = document.getElementById('weight' + i);
         pointText.textContent = "Points: " + players[i].Points;
     }
 }
 
-function updatePointsOf(i){
+function updatePointsOf(i) {
     getPoints(i);
     var pointText = document.getElementById('weight' + i);
     pointText.textContent = "Player " + i + ": " + players[i].Points;
 }
 
-function printCards(card, j){
+function printCards(card, j) {
     const playerId = document.getElementById('player' + j);
     console.log(j + " " + card.Suits + " " + card.ValueCards);
 
@@ -126,13 +127,13 @@ function printCards(card, j){
 
     numSpan.textContent = card.ValueCards;
 
-    if(card.Suits === 'hearts'){
+    if (card.Suits === 'hearts') {
         sySpan.innerHTML = '&hearts;';
-    }else if(card.Suits === 'clubs'){
+    } else if (card.Suits === 'clubs') {
         sySpan.innerHTML = '&clubs;';
-    }else if(card.Suits === 'diamonds'){
+    } else if (card.Suits === 'diamonds') {
         sySpan.innerHTML = '&diamondsuit;';
-    }else if(card.Suits === 'spades'){
+    } else if (card.Suits === 'spades') {
         sySpan.innerHTML = '&spades;';
     }
 
@@ -150,22 +151,27 @@ function blackjackCheck(){
     }
 }*/
 
-function clearTable(){
-    for(let i = 0; i <= 1; i++){
-        const playerId0 = document.getElementById('player' + i);
-        while(playerId0.childNodes.length != 1){
-            playerId0.removeChild(playerId0.lastChild);
-        }
-        while(players[i].Hand.length != 0){
+function clearTable() {
+    var j, elements = document.getElementsByClassName('card');
+    for (let i = 0; i <= 2; i++) {
+        console.log("Player hand length " + players[i].Hand.length);
+        while (players[i].Hand.length != 0) {
             players[i].Hand.pop();
-            players[i].Points = 0;
         }
+        players[i].Points = 0;
+        for (j = elements.length; j--;) {
+            elements[j].parentNode.removeChild(elements[j]);
+        }
+        document.getElementById('p' + i).textContent = "Player " + i;
     }
+    document.getElementById('player' + playerNum).style.border = 'none';
     playerNum = 0;
+    document.getElementById('player' + playerNum).style.border = '1px solid black';
+    document.getElementById('p2').textContent = "The Dealer";
     dealCards();
 }
 
-function showDealer(){
+function showDealer() {
     const dealerNum = players.length - 1;
     const card = players[dealerNum].Hand[1];
     printCards(card, 2);
@@ -174,55 +180,74 @@ function showDealer(){
     document.getElementById('weight2').textContent = "House: " + players[dealerNum].Points;
 }
 
-function hit(){
+function hit() {
     var hitCard = shuffleDeck.pop();
     players[playerNum].Hand.push(hitCard);
     printCards(hitCard, playerNum);
     updatePointsOf(playerNum);
-   // blackjackCheck();
+    // blackjackCheck();
 }
 
-function stay(){
-    document.getElementById('p'+playerNum).innerHTML = "Player " + playerNum + ": " + " Stay!";
+function stay() {
+    document.getElementById('p' + playerNum).textContent = "Player " + playerNum + ": " + " Stay!";
+    document.getElementById('player' + playerNum).style.border = 'none';
     playerNum++;
     document.getElementById('turn').textContent = "Player: " + playerNum + " Turn";
-    if(playerNum === players.length-1){
+    document.getElementById('player' + playerNum).style.border = '1px solid black';
+    if (playerNum === players.length - 1) {
         document.getElementById('turn').textContent = "House's Turn";
         showDealer();
         houseTurn();
     }
 }
 
-function houseTurn(){
+function houseTurn() {
     console.log("house");
     const dealerNum = players.length - 1;
     let initialPoints = players[dealerNum].Points;
-    if(initialPoints >= 17){
-        stay();
+    if (initialPoints >= 17) {
+        document.getElementById('p2').textContent = "Dealer: " + " Stay!";
     }
-    while(initialPoints < 17){
+    while (initialPoints < 17) {
         hit();
         initialPoints = players[dealerNum].Points;
     }
     check();
 }
 
-function check(){
+function nextDeal(time, elem) {
+    var element = document.getElementById(elem);
+    var timer = setInterval(function () {
+        if (time <= 0) {
+            clearInterval(timer);
+            element.removeChild(element.lastChild);
+            clearTable();
+            console.log("still");
+        } else {
+            element.innerHTML = "<h2>Next Hand Starts in " + time + " seconds</h2>";
+        }
+        time--;
+    }, 1000);
+}
+
+function check() {
     console.log("check");
     //compare each player with the dealer hand.
-    for(let i = 0; i <= players.length - 2; i++){
+    //rework this function!
+    for (let i = 0; i <= players.length - 2; i++) {
         console.log("loop");
-        if(players[i].Points > 21){
+        if (players[i].Points > 21) {
             document.getElementById('p' + i).textContent = "Player " + i + " Is Busted and Lost";
         }
-        else if(players[i].Points > players[2].Points || players[2].Points > 21){
+        else if (players[i].Points > players[2].Points || players[2].Points > 21) {
             console.log(i);
             document.getElementById('p' + i).textContent = "Player " + i + " Wins Against the House";
         }
-        else if(players[2].Points > players[i].Points){
+        else if (players[2].Points > players[i].Points) {
             document.getElementById('p' + 2).textContent = "The House Wins";
             document.getElementById('p' + i).textContent = "Player " + i + " Lost";
         }
     }
-    
- }
+    console.log("Node length: " + document.getElementById('player0').childNodes.length);
+    nextDeal(10, "deal");
+}
